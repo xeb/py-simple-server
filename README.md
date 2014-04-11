@@ -5,7 +5,7 @@ A simple Python client/server that uses a basic **protobuf** protocol to communi
 
 # Execution
 ## Build
-```python setup.py build```
+```python setup.py build``` 
 
 Will generate the Messages_pb2.py file from Messages.proto
 
