@@ -1,0 +1,49 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: back2-svc
+  labels:
+    app: back2
+    tier: backend
+    role: master
+spec:
+  # clusterIP: None
+  ports:
+  - port: 8040
+    targetPort: 8040
+    name: backend
+  selector:
+    app: back2
+    tier: backend
+    role: master
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: back2
+spec:
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: back2
+        tier: backend
+        role: master
+        version: "2.1" # we must change the Deployment.spec.template to trigger an update
+    spec:
+      terminationGracePeriodSeconds: 300 # 5min to handle SIGTERM
+      containers:
+      - name: back2
+        image: xebxeb/pysimserv:latest
+        args:
+        - --type=back
+        - --name=BACK2
+        - --port=8040
+        ports:
+        - name: back
+          containerPort: 8040
+        # resources:
+        #   requests:
+        #     cpu: 100m # measured in hundredths of cores (i.e. 0.100 cores)
+        #     memory: 100Mi # measured in megabytes of memory
+---

@@ -1,0 +1,48 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: front
+  labels:
+    app: front
+    role: master
+    tier: frontend
+spec:
+  type: NodePort
+  ports:
+  - port: 8050
+    targetPort: 8050
+    name: frontend
+  selector:
+    app: front
+    role: master
+    tier: frontend
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: front
+spec:
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: front
+        role: master
+        tier: frontend
+        version: v2 # we must change the Deployment.spec.template to trigger an update
+    spec:
+      containers:
+      - name: front
+        image: xebxeb/pysimserv:latest
+        imagePullPolicy: Always
+        args:
+        - --type=front
+        - --name=FRONT
+        - --backends=dynamic
+        - --dnshosts=back1-svc,back2-svc
+        - --dnsport=8040
+        - --port=8050
+        ports:
+        - name: front
+          containerPort: 8050
+---

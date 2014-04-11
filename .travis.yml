@@ -7,6 +7,7 @@ python:
   - "pypy"
 install:
   - "pip install protobuf"
-script: 
+  - "pip install colorama"
+script:
   - python -m compileall -f .
-  - python setup.py test
+  - python src/setup.py test

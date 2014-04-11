@@ -1,0 +1,131 @@
+BACK:
+  ports:
+  - :8040/tcp
+  log_driver: ''
+  labels:
+    io.rancher.container.pull_image: always
+  tty: true
+  command:
+  - --name=back
+  - --type=back
+  - --port=8040
+  log_opt: {}
+  # hostname: back
+  image: xebxeb/pysimserv:latest
+  stdin_open: true
+CONSUL:
+  ports:
+  - 8400:8400/tcp
+  - 8500:8500/tcp
+  - 8600:53/udp
+  log_driver: ''
+  labels:
+    io.rancher.container.pull_image: always
+    io.rancher.scheduler.affinity:host_label: consul=true
+    type: master
+    io.rancher.container.dns: 'true'
+  tty: true
+  command:
+  - -server
+  - -bootstrap
+  - -ui-dir
+  - /ui
+  log_opt: {}
+  # hostname: consul-master
+  image: progrium/consul:latest
+  stdin_open: true
+REGISTRATOR:
+  log_driver: ''
+  labels:
+    io.rancher.scheduler.global: 'true'
+    io.rancher.container.pull_image: always
+  tty: true
+  command:
+  - --interface=eth1
+  - consul://192.168.99.109:8500
+  # TODO: dynamic
+  log_opt: {}
+  image: xebxeb/pysimserv-registrator
+  links:
+  - CONSUL:link-consul
+  volumes:
+  - /var/run/docker.sock:/tmp/docker.sock
+  stdin_open: true
+  net: host
+BACK-UTIL:
+  ports:
+  - :8040/tcp
+  log_driver: ''
+  labels:
+    io.rancher.container.pull_image: always
+  tty: true
+  command:
+  - --name=util
+  - --type=back
+  - --port=8040
+  log_opt: {}
+  # hostname: util
+  image: xebxeb/pysimserv:latest
+  stdin_open: true
+LOADBALANCER:
+  ports:
+  - 8099:8050/tcp
+  log_driver: ''
+  labels:
+    io.rancher.container.pull_image: always
+  tty: true
+  command:
+  - --type=front
+  - --backends=dynamic
+  - --port=8050
+  - --pattern=front
+  - --name=loadbalancing
+  - --consul=http://192.168.99.109:8500/v1/catalog/service/pysimserv
+  # TODO: make this dynamic
+  log_opt: {}
+  # hostname: loadbalancer
+  image: xebxeb/pysimserv:latest
+  links:
+  - FRONT:link-front
+  - CONSUL:link-consul
+  stdin_open: true
+BACK-SOCIAL:
+  ports:
+  - :8040/tcp
+  log_driver: ''
+  labels:
+    io.rancher.container.pull_image: always
+  tty: true
+  command:
+  - --name=social
+  - --type=back
+  - --port=8040
+  log_opt: {}
+  # hostname: social
+  image: xebxeb/pysimserv:latest
+  stdin_open: true
+FRONT:
+  ports:
+  - :8050/tcp
+  log_driver: ''
+  labels:
+    io.rancher.container.pull_image: always
+  tty: true
+  command:
+  - --type=front
+  - --backends=dynamic
+  - --port=8050
+  - --pattern=back
+  - --name=front
+  - --consul=http://192.168.99.109:8500/v1/catalog/service/pysimserv
+  # TODO: make this dynamic
+  log_opt: {}
+  # hostname: front
+  image: xebxeb/pysimserv:latest
+  links:
+  - BACK:link-back
+  - BACK-UTIL:link-util
+  - BACK-SOCIAL:link-social
+  - CONSUL:link-consul
+  - REGISTRATOR:link-registrator
+  stdin_open: true

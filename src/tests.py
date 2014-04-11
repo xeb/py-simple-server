@@ -8,22 +8,8 @@ from messageparser import MessageParser
 
 class Tests():
 
-	def test_deserialize(self):
-		mp = MessageParser()
-		ping_msg = mp.Deserialize("08011017520608ecf49d9a05".decode("hex"))
-		
-		self.assert_msg(lambda: ping_msg.Message.correlation_id == 23, "Expected correlation_id to be 23")
-
-	def test_serialize(self):
-		mp = MessageParser()
-		pong = mp.CreateMessage(Message.Pong, correlation_id=666)
-		pong.Value.original_timestamp = 1397195273
-		strval = pong.Message.SerializeToString().encode("hex")
-
-		self.assert_msg(lambda: strval == "0802109a055a060889849e9a05", "Expected %s" % strval)
-
 	def test_correlation_id(self):
-		mp = MessageParser()
+		mp = MessageParser("test")
 		pong = mp.CreateMessage(Message.Pong)
 		pong.Value.original_timestamp = 1;
 		strval1 = pong.Message.SerializeToString().encode("hex")
@@ -43,8 +29,3 @@ class Tests():
 		except AssertionError as e:
 			e.args += ('Message', msg)
 			raise
-
-
-
-
-	

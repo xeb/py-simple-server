@@ -9,8 +9,6 @@ from tests import Tests
 
 def run_tests():
 	tests = Tests()
-	tests.test_deserialize()
-	tests.test_serialize()
 	tests.test_correlation_id()
 
 
@@ -19,12 +17,9 @@ if __name__ == "__main__":
 	parser.add_argument("action", choices=("test", "build"))
 	args = parser.parse_args()
 
-	if args.action == "build":
-		call(["protoc", "--python_out=.", "Messages.proto"])
+	# This doesn't work because there is a dependency on Messages_pb2
+	# if args.action == "build":
+	# 	call(["protoc", "--python_out=.", "Messages.proto"])
 
 	if args.action == "test":
 		run_tests()
-
-
-
-	

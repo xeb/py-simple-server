@@ -1,0 +1,12 @@
+BACK:
+  scale: 1
+CONSUL:
+  scale: 1
+BACK-UTIL:
+  scale: 1
+LOADBALANCER:
+  scale: 1
+BACK-SOCIAL:
+  scale: 1
+FRONT:
+  scale: 1
