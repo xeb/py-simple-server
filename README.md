@@ -15,9 +15,12 @@ Will generate the Messages_pb2.py file from Messages.proto
 You can optionally specify a port number if you desire, the default is *8044*
 
 ## Run the Client
-```python client.py```
+```python client.py``` 
 
-You will be prompted with 
+You will be prompted with a basic console to send commands.  Anything unknown you type will receive an echo.  Currently the three available messages are:
+* Ping
+* Pong (technically invalid but works)
+* Person
 
 
 # Testing
