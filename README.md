@@ -33,4 +33,4 @@ Python Simple Server has a few simple console coloring standards.
 - Green is for accepted messages
 - Blue is for understood messages but out of order (i.e. sending a Pong or receiving a Ping)
 
-<img src="http://github.com/xeb"
+<img src="https://raw.githubusercontent.com/xeb/py-simple-server/master/screenshot.png" />
