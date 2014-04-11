@@ -24,3 +24,13 @@ You will be prompted with
 ```python setup.py test```
 
 The above will run through some assertions mainly surrounding the MessageParser class
+
+# Example
+
+Python Simple Server has a few simple console coloring standards.  
+- Yellow is a warning for Unknown messages (will be an echo)
+- Red is for fatal errors
+- Green is for accepted messages
+- Blue is for understood messages but out of order (i.e. sending a Pong or receiving a Ping)
+
+<img src="http://github.com/xeb"
