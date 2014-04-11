@@ -1,0 +1,59 @@
+package simsrv;
+
+message Message {
+
+  extensions 10 to max; 
+
+  enum Type 
+  {
+    Ping = 1;
+    Pong = 2;
+    Person = 3;
+  }
+
+  required Type type = 1;
+  optional uint64 correlation_id = 2;
+}
+
+message Ping { 
+
+  extend Message {
+    required Ping message = 10;
+  }
+
+  optional uint64 timestamp = 1;
+}
+
+message Pong { 
+
+  extend Message {
+    required Pong message = 11;
+  }
+  
+  optional uint64 original_timestamp = 1;
+}
+
+message Person { 
+
+  extend Message {
+    required Person message = 12;
+  }
+  
+  required string name = 1;
+  required int32 id = 2;
+  optional string email = 3;
+
+  enum PhoneType {
+    MOBILE = 0;
+    HOME = 1;
+    WORK = 2;
+  }
+
+  message PhoneNumber {
+    required string number = 1;
+    optional PhoneType type = 2 [default = HOME];
+  }
+
+  repeated PhoneNumber phone = 4;
+  required string address = 5;
+}
