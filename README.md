@@ -1,4 +1,6 @@
+<a href="https://travis-ci.org/xeb/py-simple-server">
 <img src="https://api.travis-ci.org/xeb/py-simple-server.svg" />
+</a>
 
 Python Simple Server
 ================
