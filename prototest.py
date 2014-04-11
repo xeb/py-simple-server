@@ -67,14 +67,15 @@ def deserialize_msg():
 
 
 def msgparser_test():
-	mp = MessageParser("08011017520608ecf49d9a05".decode("hex"))
-	ping_msg = mp.Deserialize()
-	print ping_msg[0].correlation_id
+	mp = MessageParser()
+	ping_msg = mp.Deserialize("08011017520608ecf49d9a05".decode("hex"))
+	print "Correlation ID == %s " % ping_msg.Message.correlation_id
+
 
 if __name__ == "__main__":
 	serialize_person()
 	deserialize_person()
-
 	serialize_msg()
 	deserialize_msg()
+	msgparser_test()
 

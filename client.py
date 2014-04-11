@@ -4,23 +4,28 @@ import socket
 import argparse
 import calendar, time
 from Messages_pb2 import *
+from messageparser import *
 
-def send_hello(address, port):
-	print "Connecting..."
+def connect(address, port):
+	print "Connecting to %s:%s..." % (address, port)
 	client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 	client.connect((address, port))
+	
+	mp = MessageParser()
+	mp.CreateMessage(Message.Ping, )
+
 	ping_msg = Ping()
 	ping_msg.timestamp = calendar.timegm(time.gmtime())
 	client.send(ping_msg.SerializeToString.())
-
+	print "(Press 'q' to quit')"
 	while 1:
 	    data = client.recv(512)
 	    if ( data == 'q' or data == 'Q'):
 	        client.close()
 	        break;
 	    else:
-	        print "RECIEVED:" , data
-	        data = raw_input ( "SEND( TYPE q or Q to Quit; 'Ping' for Ping Message ):" )
+	        print "[received]:" , data
+	        data = raw_input ( "[send command]:" )
 	        if (data <> 'Q' and data <> 'q'):
 	            client.send(data)
 	        else:
@@ -37,4 +42,4 @@ if __name__ == "__main__":
 
 	args = parser.parse_args()
 
-	send_hello(args.address, args.port)
+	connect(args.address, args.port)

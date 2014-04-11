@@ -4,8 +4,10 @@ python:
   - "2.7"
   - "3.2"
   - "3.3"
-# command to install dependencies
+  - "pypy"
 install:
   - "pip install protobuf"
-# command to run tests
-script: nosetests
+script: 
+  - python -m compileall -f .
+  - python setup.py build
+  - python setup.py test
