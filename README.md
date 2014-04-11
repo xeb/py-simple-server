@@ -1,3 +1,5 @@
+<img src="https://api.travis-ci.org/xeb/py-simple-server.svg" />
+
 Python Simple Server
 ================
 
