@@ -10,4 +10,3 @@ install:
   - "pip install colorama"
 script:
   - python -m compileall -f .
-  - python src/setup.py test
